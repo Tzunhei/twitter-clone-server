@@ -9,7 +9,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column({ nullable: false })
+  @Column()
   email: string;
 
   @Column()
@@ -18,13 +18,13 @@ export class User {
   @Column()
   username: string;
 
-  @Column()
+  @Column({ nullable: true })
   first_name: string;
 
-  @Column()
+  @Column({ nullable: true })
   last_name: string;
 
-  @Column()
+  @Column({ nullable: true })
   biography: string;
 
   @Column({ default: true })

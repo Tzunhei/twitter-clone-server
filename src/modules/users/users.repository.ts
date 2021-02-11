@@ -6,6 +6,12 @@ import { CreateUserDto } from './users.dto';
 export class UserRepository extends Repository<User> {
   async createUser(createUserDto: CreateUserDto) {
     const user = this.create(createUserDto);
-    await this.save(user);
+    console.log(await this.find());
+    try {
+      // await this.save(user);
+      return user;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
