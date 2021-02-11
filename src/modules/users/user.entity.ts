@@ -1,7 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Tweet } from '../tweets/tweet.entity';
 
 @Entity()
 export class User {
+  @OneToMany(() => Tweet, (tweet) => tweet.user)
+  tweets: Tweet[];
+
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
@@ -23,12 +27,12 @@ export class User {
   @Column()
   biography: string;
 
-  @Column()
+  @Column({ default: true })
   isActive: boolean;
 
-  @Column()
+  @Column({ default: 0 })
   followers: number;
 
-  @Column()
+  @Column({ default: 0 })
   following: number;
 }
