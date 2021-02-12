@@ -22,3 +22,21 @@ export class CreateUserDto {
   @IsOptional()
   biography: string;
 }
+
+export class UpdateUserDto {
+  @IsString()
+  @IsOptional()
+  username: string;
+
+  @IsString()
+  @IsOptional()
+  first_name: string;
+
+  @IsString()
+  @IsOptional()
+  last_name: string;
+
+  @IsString()
+  @IsOptional()
+  biography: string;
+}

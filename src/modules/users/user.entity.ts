@@ -10,7 +10,7 @@ export class User extends Base {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column({ unique: true })
@@ -25,7 +25,7 @@ export class User extends Base {
   @Column({ nullable: true })
   biography: string;
 
-  @Column({ default: true })
+  @Column({ default: true, select: false })
   isActive: boolean;
 
   @Column({ default: 0 })
