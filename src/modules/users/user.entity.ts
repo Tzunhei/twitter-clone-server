@@ -1,13 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Base } from 'src/shared/entities/base.entity';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { Tweet } from '../tweets/tweet.entity';
 
 @Entity()
-export class User {
+export class User extends Base {
   @OneToMany(() => Tweet, (tweet) => tweet.user)
   tweets: Tweet[];
-
-  @PrimaryGeneratedColumn('uuid')
-  id: number;
 
   @Column({ unique: true })
   email: string;
