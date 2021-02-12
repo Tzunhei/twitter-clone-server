@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
@@ -6,7 +7,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export abstract class Dates {
+export abstract class Dates extends BaseEntity {
   @CreateDateColumn({ nullable: true, type: 'timestamptz' })
   createdAt: number;
 

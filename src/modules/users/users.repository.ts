@@ -9,6 +9,14 @@ export class UserRepository extends Repository<User> {
     return await bcrypt.hash(password, await bcrypt.genSalt());
   }
 
+  async findUserById(id: string) {
+    try {
+      return this.findOne(id);
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
   async createUser(createUserDto: CreateUserDto) {
     try {
       const password = await this.hashPassword(createUserDto.password);

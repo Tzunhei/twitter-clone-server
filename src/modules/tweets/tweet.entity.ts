@@ -10,12 +10,12 @@ export class Tweet extends Base {
   @Column({ nullable: false })
   post: string;
 
-  @Column()
+  @Column({ default: 0 })
   favorites: number;
 
-  @Column()
+  @Column({ default: 0 })
   replies: number;
 
-  @Column()
+  @Column({ default: 0 })
   retweets: number;
 }

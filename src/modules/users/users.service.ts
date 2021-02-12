@@ -9,6 +9,10 @@ export class UsersService {
     return getCustomRepository(UserRepository);
   }
 
+  findUserById(id: string) {
+    return this.getRepository().findUserById(id);
+  }
+
   signUp(createUserDto: CreateUserDto) {
     return this.getRepository().createUser(createUserDto);
   }

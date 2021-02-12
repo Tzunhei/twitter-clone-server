@@ -1,6 +1,7 @@
 import { Base } from 'src/shared/entities/base.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 import { Tweet } from '../tweets/tweet.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User extends Base {
@@ -10,7 +11,8 @@ export class User extends Base {
   @Column({ unique: true })
   email: string;
 
-  @Column({ select: false })
+  @Column()
+  @Exclude()
   password: string;
 
   @Column({ unique: true })
