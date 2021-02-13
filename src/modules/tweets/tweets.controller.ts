@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -8,6 +9,7 @@ import {
   Param,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { GetUser } from '../auth/getUser.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -15,6 +17,7 @@ import { JwtUserClaims } from '../auth/jwtClaims.interface';
 import { PostTweetDto } from './tweets.dto';
 import { TweetsService } from './tweets.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('tweets')
 @UseGuards(JwtAuthGuard)
 export class TweetsController {
