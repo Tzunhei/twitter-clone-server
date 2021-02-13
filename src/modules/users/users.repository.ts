@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, getConnection, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto, UpdateUserDto } from './users.dto';
 import * as bcrypt from 'bcryptjs';
@@ -51,6 +51,19 @@ export class UserRepository extends Repository<User> {
   async deleteUser(id: string) {
     try {
       await this.delete(id);
+      return true;
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async followUser(user: User, follow: User) {
+    try {
+      await getConnection()
+        .createQueryBuilder()
+        .relation(User, 'follow')
+        .of(user)
+        .add(follow);
       return true;
     } catch (e) {
       throw new BadRequestException(e);

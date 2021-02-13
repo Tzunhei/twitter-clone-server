@@ -1,5 +1,5 @@
 import { Base } from 'src/shared/entities/base.entity';
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Tweet } from '../tweets/tweet.entity';
 import { Exclude } from 'class-transformer';
 
@@ -31,8 +31,12 @@ export class User extends Base {
   isActive: boolean;
 
   @Column({ default: 0 })
-  followers: number;
+  nb_followers: number;
 
   @Column({ default: 0 })
-  following: number;
+  nb_following: number;
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  follow: User[];
 }
