@@ -3,6 +3,8 @@ import { EntityRepository, getConnection, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto, UpdateUserDto } from './users.dto';
 import * as bcrypt from 'bcryptjs';
+
+type FollowCountColumns = 'nb_followers' | 'nb_following';
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
   private async hashPassword(password: string) {
@@ -57,6 +59,22 @@ export class UserRepository extends Repository<User> {
     }
   }
 
+  async incrementFollowCount(userId: number, column: FollowCountColumns) {
+    try {
+      await this.increment({ id: userId }, column, 1);
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async decrementFollowCount(userId: number, column: FollowCountColumns) {
+    try {
+      await this.decrement({ id: userId }, column, 1);
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
   async followUser(user: User, follow: User) {
     try {
       await getConnection()
@@ -64,6 +82,19 @@ export class UserRepository extends Repository<User> {
         .relation(User, 'follow')
         .of(user)
         .add(follow);
+      return true;
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async unfollowUser(user: User, followId: number) {
+    try {
+      await getConnection()
+        .createQueryBuilder()
+        .relation(User, 'follow')
+        .of(user)
+        .remove(followId);
       return true;
     } catch (e) {
       throw new BadRequestException(e);

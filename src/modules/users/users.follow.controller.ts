@@ -1,6 +1,7 @@
 import {
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
   Param,
@@ -23,5 +24,11 @@ export class FollowController {
   @HttpCode(HttpStatus.OK)
   followUser(@GetUser() user: JwtUserClaims, @Param() followId: string) {
     return this.followService.followUser(user.userId, followId);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  unfollowUser(@GetUser() user: JwtUserClaims, @Param() followId: string) {
+    return this.followService.unfollowUser(user.userId, followId);
   }
 }
