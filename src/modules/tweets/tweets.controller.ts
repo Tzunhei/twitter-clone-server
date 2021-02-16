@@ -25,6 +25,12 @@ export class TweetsController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
+  getTweetsFeed(@GetUser() user: JwtUserClaims) {
+    return this.tweetsService.getTweetsFeed(user.userId);
+  }
+
+  @Get('user')
+  @HttpCode(HttpStatus.OK)
   findTweetsByUserId(@GetUser() user: JwtUserClaims) {
     return this.tweetsService.findTweetsByUserId(user.userId);
   }

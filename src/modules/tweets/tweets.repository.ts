@@ -13,6 +13,21 @@ export class TweetRepository extends Repository<Tweet> {
     }
   }
 
+  async findTweetsByUserIds(users: User[]) {
+    try {
+      const whereUserIds = users.map((val) => ({ user: { id: val.id } }));
+      return await this.find({
+        where: whereUserIds,
+        relations: ['user'],
+        order: {
+          createdAt: 'DESC',
+        },
+      });
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
   async createTweet(user: User, post: string) {
     try {
       const tweet = this.create({ user, post });

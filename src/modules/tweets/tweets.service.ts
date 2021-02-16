@@ -1,14 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { getCustomRepository } from 'typeorm';
+import { FollowService } from '../users/users.follow.service';
 import { UsersService } from '../users/users.service';
 import { TweetRepository } from './tweets.repository';
 
 @Injectable()
 export class TweetsService {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private followService: FollowService,
+  ) {}
 
   private getRepository() {
     return getCustomRepository(TweetRepository);
+  }
+
+  async getTweetsFeed(userId: string) {
+    const user = await this.usersService.findUserById(userId);
+    const followings = await this.followService.getUserFollowings(userId);
+    return await this.getRepository().findTweetsByUserIds([
+      user,
+      ...followings,
+    ]);
   }
 
   async findTweetsByUserId(userId: string) {

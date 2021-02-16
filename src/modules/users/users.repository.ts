@@ -13,7 +13,11 @@ export class UserRepository extends Repository<User> {
 
   async getUserFollowings(userId: number) {
     try {
-      return await this.find({ where: { id: userId }, relations: ['follow'] });
+      const user = await this.findOne({
+        where: { id: userId },
+        relations: ['follow'],
+      });
+      return user.follow;
     } catch (e) {
       throw new BadRequestException(e);
     }
