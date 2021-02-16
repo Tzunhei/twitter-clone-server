@@ -8,9 +8,11 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { GetUser } from '../auth/getUser.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { JwtUserClaims } from '../auth/jwtClaims.interface';
@@ -25,8 +27,11 @@ export class TweetsController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getTweetsFeed(@GetUser() user: JwtUserClaims) {
-    return this.tweetsService.getTweetsFeed(user.userId);
+  getTweetsFeed(
+    @GetUser() user: JwtUserClaims,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.tweetsService.getTweetsFeed(user.userId, paginationDto);
   }
 
   @Get('user')

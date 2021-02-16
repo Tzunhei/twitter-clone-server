@@ -13,7 +13,7 @@ export class TweetRepository extends Repository<Tweet> {
     }
   }
 
-  async findTweetsByUserIds(users: User[]) {
+  async findTweetsByUserIds(users: User[], limit: number, offset: number) {
     try {
       const whereUserIds = users.map((val) => ({ user: { id: val.id } }));
       return await this.find({
@@ -22,6 +22,8 @@ export class TweetRepository extends Repository<Tweet> {
         order: {
           createdAt: 'DESC',
         },
+        take: limit,
+        skip: offset,
       });
     } catch (e) {
       throw new BadRequestException(e);

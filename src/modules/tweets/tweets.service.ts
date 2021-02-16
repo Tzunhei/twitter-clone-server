@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { getCustomRepository } from 'typeorm';
 import { FollowService } from '../users/users.follow.service';
 import { UsersService } from '../users/users.service';
@@ -15,13 +16,14 @@ export class TweetsService {
     return getCustomRepository(TweetRepository);
   }
 
-  async getTweetsFeed(userId: string) {
+  async getTweetsFeed(userId: string, paginationDto: PaginationDto) {
     const user = await this.usersService.findUserById(userId);
     const followings = await this.followService.getUserFollowings(userId);
-    return await this.getRepository().findTweetsByUserIds([
-      user,
-      ...followings,
-    ]);
+    return await this.getRepository().findTweetsByUserIds(
+      [user, ...followings],
+      paginationDto.limit,
+      paginationDto.offset,
+    );
   }
 
   async findTweetsByUserId(userId: string) {
