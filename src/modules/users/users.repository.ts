@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { EntityRepository, getConnection, Repository } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto, UpdateUserDto } from './users.dto';
 import * as bcrypt from 'bcryptjs';
@@ -9,6 +9,29 @@ type FollowCountColumns = 'nb_followers' | 'nb_following';
 export class UserRepository extends Repository<User> {
   private async hashPassword(password: string) {
     return await bcrypt.hash(password, await bcrypt.genSalt());
+  }
+
+  async getUserFollowings(userId: number) {
+    try {
+      return await this.find({ where: { id: userId }, relations: ['follow'] });
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async getUserFollowers(userId: number) {
+    try {
+      return await this.createQueryBuilder()
+        .leftJoinAndSelect(
+          'user_follow_user',
+          'follow',
+          'follow.userId_1 = User.id',
+        )
+        .where('follow.userId_2 = :id', { id: userId })
+        .getMany();
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
   }
 
   async findUserByUsername(username: string) {
@@ -77,8 +100,7 @@ export class UserRepository extends Repository<User> {
 
   async followUser(user: User, follow: User) {
     try {
-      await getConnection()
-        .createQueryBuilder()
+      await this.createQueryBuilder()
         .relation(User, 'follow')
         .of(user)
         .add(follow);
@@ -90,8 +112,7 @@ export class UserRepository extends Repository<User> {
 
   async unfollowUser(user: User, followId: number) {
     try {
-      await getConnection()
-        .createQueryBuilder()
+      await this.createQueryBuilder()
         .relation(User, 'follow')
         .of(user)
         .remove(followId);

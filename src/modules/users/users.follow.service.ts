@@ -11,6 +11,16 @@ export class FollowService {
     return getCustomRepository(UserRepository);
   }
 
+  async getUserFollowings(userId: string) {
+    const user = await this.usersService.findUserById(userId);
+    return this.getRepository().getUserFollowings(user.id);
+  }
+
+  async getUserFollowers(userId: string) {
+    const user = await this.usersService.findUserById(userId);
+    return this.getRepository().getUserFollowers(user.id);
+  }
+
   async followUser(userId: string, followId: string) {
     const user = await this.usersService.findUserById(userId);
     const follow = await this.usersService.findUserById(followId);

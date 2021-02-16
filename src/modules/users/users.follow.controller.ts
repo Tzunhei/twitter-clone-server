@@ -2,6 +2,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -19,6 +20,18 @@ import { FollowService } from './users.follow.service';
 @Controller('users/follow')
 export class FollowController {
   constructor(private followService: FollowService) {}
+
+  @Get('followings')
+  @HttpCode(HttpStatus.OK)
+  getUserFollowings(@GetUser() user: JwtUserClaims) {
+    return this.followService.getUserFollowings(user.userId);
+  }
+
+  @Get('followers')
+  @HttpCode(HttpStatus.OK)
+  getUserFollowers(@GetUser() user: JwtUserClaims) {
+    return this.followService.getUserFollowers(user.userId);
+  }
 
   @Post(':id')
   @HttpCode(HttpStatus.OK)
