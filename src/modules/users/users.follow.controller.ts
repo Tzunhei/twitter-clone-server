@@ -11,11 +11,11 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FollowService } from './users.follow.service';
 import { GetUser } from '../auth/getUser.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { JwtUserClaims } from '../auth/jwtClaims.interface';
-import { FollowService } from './users.follow.service';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @UseGuards(JwtAuthGuard)

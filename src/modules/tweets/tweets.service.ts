@@ -26,6 +26,10 @@ export class TweetsService {
     );
   }
 
+  async findTweetById(tweetId: string) {
+    return this.getRepository().findTweetById(tweetId);
+  }
+
   async findTweetsByUserId(userId: string) {
     const user = await this.usersService.findUserById(userId);
     return this.getRepository().findTweetsByUserId(user);
@@ -38,5 +42,13 @@ export class TweetsService {
 
   async deleteTweet(id: string) {
     return this.getRepository().deleteTweet(id);
+  }
+
+  async incrementLikesCounter(tweetId: string) {
+    return this.getRepository().incrementCount(tweetId, 'likes');
+  }
+
+  async decrementLikesCounter(tweetId: string) {
+    return this.getRepository().decrementCount(tweetId, 'likes');
   }
 }

@@ -11,7 +11,7 @@ export class UserRepository extends Repository<User> {
     return await bcrypt.hash(password, await bcrypt.genSalt());
   }
 
-  async getUserFollowings(userId: number, limit?: number, offset?: number) {
+  async getUserFollowings(userId: string, limit?: number, offset?: number) {
     try {
       return await this.createQueryBuilder()
         .leftJoinAndSelect(
@@ -36,7 +36,7 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async getUserFollowers(userId: number, limit?: number, offset?: number) {
+  async getUserFollowers(userId: string, limit?: number, offset?: number) {
     try {
       return await this.createQueryBuilder()
         .leftJoinAndSelect(
@@ -101,7 +101,7 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async incrementFollowCount(userId: number, column: FollowCountColumns) {
+  async incrementFollowCount(userId: string, column: FollowCountColumns) {
     try {
       await this.increment({ id: userId }, column, 1);
     } catch (e) {
@@ -109,7 +109,7 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async decrementFollowCount(userId: number, column: FollowCountColumns) {
+  async decrementFollowCount(userId: string, column: FollowCountColumns) {
     try {
       await this.decrement({ id: userId }, column, 1);
     } catch (e) {
@@ -129,7 +129,7 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async unfollowUser(user: User, followId: number) {
+  async unfollowUser(user: User, followId: string) {
     try {
       await this.createQueryBuilder()
         .relation(User, 'follow')

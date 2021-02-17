@@ -1,5 +1,5 @@
 import { Base } from 'src/shared/entities/base.entity';
-import { Entity, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { Tweet } from '../tweets/tweet.entity';
 import { Exclude } from 'class-transformer';
 

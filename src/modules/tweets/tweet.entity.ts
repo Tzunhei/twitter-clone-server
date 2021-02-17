@@ -1,5 +1,5 @@
 import { Base } from 'src/shared/entities/base.entity';
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { User } from '../users/user.entity';
 
 @Entity()
@@ -11,7 +11,7 @@ export class Tweet extends Base {
   post: string;
 
   @Column({ default: 0 })
-  favorites: number;
+  likes: number;
 
   @Column({ default: 0 })
   replies: number;

@@ -3,11 +3,20 @@ import { EntityRepository, Repository } from 'typeorm';
 import { User } from '../users/user.entity';
 import { Tweet } from './tweet.entity';
 
+type TweetCounts = 'likes' | 'replies' | 'retweets';
 @EntityRepository(Tweet)
 export class TweetRepository extends Repository<Tweet> {
   async findTweetsByUserId(user: User) {
     try {
       return await this.find({ where: { user }, relations: ['user'] });
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async findTweetById(tweetId: string) {
+    try {
+      return await this.findOne(tweetId);
     } catch (e) {
       throw new BadRequestException(e);
     }
@@ -44,6 +53,22 @@ export class TweetRepository extends Repository<Tweet> {
     try {
       await this.delete(id);
       return true;
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async incrementCount(tweetId: string, column: TweetCounts) {
+    try {
+      await this.increment({ id: tweetId }, column, 1);
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async decrementCount(tweetId: string, column: TweetCounts) {
+    try {
+      await this.decrement({ id: tweetId }, column, 1);
     } catch (e) {
       throw new BadRequestException(e);
     }
