@@ -8,7 +8,10 @@ import { Like } from './like.entity';
 export class LikeRepository extends Repository<Like> {
   async getUserLikes(user: User) {
     try {
-      return await this.find({ user });
+      return await this.find({
+        where: { user },
+        relations: ['tweet', 'tweet.user'],
+      });
     } catch (e) {
       throw new BadRequestException(e);
     }

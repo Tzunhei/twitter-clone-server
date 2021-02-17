@@ -16,8 +16,8 @@ export class FollowService {
     const user = await this.usersService.findUserById(userId);
     return this.getRepository().getUserFollowings(
       user.id,
-      paginationDto.limit,
-      paginationDto.offset,
+      paginationDto?.limit,
+      paginationDto?.offset,
     );
   }
 
@@ -25,8 +25,8 @@ export class FollowService {
     const user = await this.usersService.findUserById(userId);
     return this.getRepository().getUserFollowers(
       user.id,
-      paginationDto.limit,
-      paginationDto.offset,
+      paginationDto?.limit,
+      paginationDto?.offset,
     );
   }
 
