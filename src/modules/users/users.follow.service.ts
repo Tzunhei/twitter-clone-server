@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from './users.repository';
 import { UsersService } from './users.service';
@@ -11,14 +12,22 @@ export class FollowService {
     return getCustomRepository(UserRepository);
   }
 
-  async getUserFollowings(userId: string) {
+  async getUserFollowings(userId: string, paginationDto?: PaginationDto) {
     const user = await this.usersService.findUserById(userId);
-    return this.getRepository().getUserFollowings(user.id);
+    return this.getRepository().getUserFollowings(
+      user.id,
+      paginationDto.limit,
+      paginationDto.offset,
+    );
   }
 
-  async getUserFollowers(userId: string) {
+  async getUserFollowers(userId: string, paginationDto?: PaginationDto) {
     const user = await this.usersService.findUserById(userId);
-    return this.getRepository().getUserFollowers(user.id);
+    return this.getRepository().getUserFollowers(
+      user.id,
+      paginationDto.limit,
+      paginationDto.offset,
+    );
   }
 
   async followUser(userId: string, followId: string) {

@@ -7,9 +7,11 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { GetUser } from '../auth/getUser.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { JwtUserClaims } from '../auth/jwtClaims.interface';
@@ -23,14 +25,20 @@ export class FollowController {
 
   @Get('followings')
   @HttpCode(HttpStatus.OK)
-  getUserFollowings(@GetUser() user: JwtUserClaims) {
-    return this.followService.getUserFollowings(user.userId);
+  getUserFollowings(
+    @GetUser() user: JwtUserClaims,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.followService.getUserFollowings(user.userId, paginationDto);
   }
 
   @Get('followers')
   @HttpCode(HttpStatus.OK)
-  getUserFollowers(@GetUser() user: JwtUserClaims) {
-    return this.followService.getUserFollowers(user.userId);
+  getUserFollowers(
+    @GetUser() user: JwtUserClaims,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.followService.getUserFollowers(user.userId, paginationDto);
   }
 
   @Post(':id')

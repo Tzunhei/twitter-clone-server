@@ -11,7 +11,7 @@ export class UserRepository extends Repository<User> {
     return await bcrypt.hash(password, await bcrypt.genSalt());
   }
 
-  async getUserFollowings(userId: number) {
+  async getUserFollowings(userId: number, limit?: number, offset?: number) {
     try {
       return await this.createQueryBuilder()
         .leftJoinAndSelect(
@@ -28,13 +28,15 @@ export class UserRepository extends Repository<User> {
             .getQuery();
           return `User.id IN ${followingsIds}`;
         })
+        .take(limit)
+        .skip(offset)
         .getMany();
     } catch (e) {
       throw new BadRequestException(e);
     }
   }
 
-  async getUserFollowers(userId: number) {
+  async getUserFollowers(userId: number, limit?: number, offset?: number) {
     try {
       return await this.createQueryBuilder()
         .leftJoinAndSelect(
@@ -43,6 +45,8 @@ export class UserRepository extends Repository<User> {
           'follow.userId_1 = User.id',
         )
         .where('follow.userId_2 = :id', { id: userId })
+        .take(limit)
+        .skip(offset)
         .getMany();
     } catch (e) {
       throw new BadRequestException(e);
