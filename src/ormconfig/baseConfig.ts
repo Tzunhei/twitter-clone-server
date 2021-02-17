@@ -9,4 +9,5 @@ export const config: TypeOrmModuleOptions = {
   database: process.env.DB_NAME || 'twitter-clone',
   entities: [__dirname + '/../modules/**/*.entity{.ts,.js}'],
   synchronize: true,
+  logging: true,
 };

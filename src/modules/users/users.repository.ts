@@ -13,11 +13,22 @@ export class UserRepository extends Repository<User> {
 
   async getUserFollowings(userId: number) {
     try {
-      const user = await this.findOne({
-        where: { id: userId },
-        relations: ['follow'],
-      });
-      return user.follow;
+      return await this.createQueryBuilder()
+        .leftJoinAndSelect(
+          'user_follow_user',
+          'follow',
+          'follow.userId_1 = User.id',
+        )
+        .where((qb) => {
+          const followingsIds = qb
+            .subQuery()
+            .select('follow.userId_2')
+            .from('user_follow_user', 'follow')
+            .where('follow.userId_1 = :id', { id: userId })
+            .getQuery();
+          return `User.id IN ${followingsIds}`;
+        })
+        .getMany();
     } catch (e) {
       throw new BadRequestException(e);
     }
