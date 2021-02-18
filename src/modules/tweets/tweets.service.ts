@@ -4,6 +4,7 @@ import { getCustomRepository } from 'typeorm';
 import { HashtagsService } from '../hashtags/hashtags.service';
 import { FollowService } from '../users/users.follow.service';
 import { UsersService } from '../users/users.service';
+import { FindTweetsByHashtagDto } from './tweets.dto';
 import { TweetRepository } from './tweets.repository';
 
 @Injectable()
@@ -28,9 +29,10 @@ export class TweetsService {
     );
   }
 
-  async findTweetsByHashtag(tag: string) {
+  async findTweetsByHashtag(findTweetsByHashtagDto: FindTweetsByHashtagDto) {
+    const { tag, limit, offset } = findTweetsByHashtagDto;
     const hashtag = await this.hashtagsService.findHashtagByTag(tag);
-    return this.getRepository().findTweetsByHashtag(hashtag);
+    return this.getRepository().findTweetsByHashtag(hashtag, limit, offset);
   }
 
   async findTweetById(tweetId: string) {

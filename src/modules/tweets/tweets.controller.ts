@@ -16,7 +16,7 @@ import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { GetUser } from '../auth/getUser.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { JwtUserClaims } from '../auth/jwtClaims.interface';
-import { PostTweetDto } from './tweets.dto';
+import { FindTweetsByHashtagDto, PostTweetDto } from './tweets.dto';
 import { TweetsService } from './tweets.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -34,10 +34,10 @@ export class TweetsController {
     return this.tweetsService.getTweetsFeed(user.userId, paginationDto);
   }
 
-  @Get('/hashtag')
+  @Get('hashtag')
   @HttpCode(HttpStatus.OK)
-  findTweetsByHashtag(@Query('tag') tag: string) {
-    return this.tweetsService.findTweetsByHashtag(tag);
+  findTweetsByHashtag(@Query() findTweetsByHashtagDto: FindTweetsByHashtagDto) {
+    return this.tweetsService.findTweetsByHashtag(findTweetsByHashtagDto);
   }
 
   @Get('user')
@@ -47,8 +47,6 @@ export class TweetsController {
   }
 
   @Get()
-  @HttpCode(HttpStatus.OK)
-  @Post()
   @HttpCode(HttpStatus.OK)
   postTweet(
     @GetUser() user: JwtUserClaims,
