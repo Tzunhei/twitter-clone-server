@@ -1,5 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
+import { Hashtag } from '../hashtags/hashtag.entity';
 import { User } from '../users/user.entity';
 import { Tweet } from './tweet.entity';
 
@@ -38,9 +39,9 @@ export class TweetRepository extends Repository<Tweet> {
     }
   }
 
-  async createTweet(user: User, post: string) {
+  async createTweet(user: User, post: string, hashtags: Hashtag[]) {
     try {
-      const tweet = this.create({ user, post });
+      const tweet = this.create({ user, post, hashtags });
       await this.save(tweet);
       return await this.findOne(tweet.id);
     } catch (e) {

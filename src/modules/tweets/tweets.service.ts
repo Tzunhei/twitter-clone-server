@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { getCustomRepository } from 'typeorm';
+import { HashtagsService } from '../hashtags/hashtags.service';
 import { FollowService } from '../users/users.follow.service';
 import { UsersService } from '../users/users.service';
 import { TweetRepository } from './tweets.repository';
@@ -10,6 +11,7 @@ export class TweetsService {
   constructor(
     private usersService: UsersService,
     private followService: FollowService,
+    private hashtagsService: HashtagsService,
   ) {}
 
   private getRepository() {
@@ -37,7 +39,8 @@ export class TweetsService {
 
   async postTweet(userId: string, post: string) {
     const user = await this.usersService.findUserById(userId);
-    return this.getRepository().createTweet(user, post);
+    const hashtags = await this.hashtagsService.extractAndSaveHashtags(post);
+    return this.getRepository().createTweet(user, post, hashtags);
   }
 
   async deleteTweet(id: string) {

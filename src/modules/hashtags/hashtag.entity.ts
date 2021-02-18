@@ -8,6 +8,6 @@ export class Hashtag extends Base {
   @JoinTable()
   tweets: Tweet[];
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   tag: string;
 }

@@ -5,5 +5,6 @@ import { HashtagsService } from './hashtags.service';
 @Module({
   controllers: [HashtagsController],
   providers: [HashtagsService],
+  exports: [HashtagsService],
 })
 export class HashtagsModule {}
