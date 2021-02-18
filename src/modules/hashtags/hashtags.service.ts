@@ -18,7 +18,14 @@ export class HashtagsService {
 
   async extractAndSaveHashtags(tweet: string) {
     const tags = this.extractHashtagsFromTweet(tweet);
-    return await this.saveHashtags(tags);
+    const tweetHashtags = await Promise.all(
+      tags.map(
+        async (t) =>
+          (await this.getRepository().findHashtagByTag(t)) ||
+          (await this.getRepository().saveHashtag(t)),
+      ),
+    );
+    return tweetHashtags;
   }
 
   async deleteHashtag(hashtagId: string) {

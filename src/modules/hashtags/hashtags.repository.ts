@@ -12,6 +12,23 @@ export class HashtagRepository extends Repository<Hashtag> {
     }
   }
 
+  async findHashtagByTag(tag: string) {
+    try {
+      return await this.findOne({ where: { tag } });
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async saveHashtag(tag: string) {
+    try {
+      const hashtag = this.create({ tag });
+      return await this.save(hashtag);
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
   async saveHashtags(hashtags: string[]) {
     try {
       const tags = hashtags.map((h) => this.create({ tag: h }));
