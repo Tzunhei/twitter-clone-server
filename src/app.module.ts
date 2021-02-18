@@ -8,6 +8,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { LikesModule } from './modules/likes/likes.module';
 import { ConfigModule } from '@nestjs/config';
+import { HashtagsModule } from './modules/hashtags/hashtags.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     TweetsModule,
     LikesModule,
+    HashtagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
