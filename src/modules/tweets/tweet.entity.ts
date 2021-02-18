@@ -4,7 +4,7 @@ import { User } from '../users/user.entity';
 
 @Entity()
 export class Tweet extends Base {
-  @ManyToOne(() => User, (user) => user.tweets)
+  @ManyToOne(() => User, (user) => user.tweets, { eager: true })
   user: User;
 
   @Column({ nullable: false })

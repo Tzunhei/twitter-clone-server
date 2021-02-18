@@ -8,7 +8,7 @@ type TweetCounts = 'likes' | 'replies' | 'retweets';
 export class TweetRepository extends Repository<Tweet> {
   async findTweetsByUserId(user: User) {
     try {
-      return await this.find({ where: { user }, relations: ['user'] });
+      return await this.find({ where: { user } });
     } catch (e) {
       throw new BadRequestException(e);
     }
@@ -27,7 +27,6 @@ export class TweetRepository extends Repository<Tweet> {
       const whereUserIds = users.map((val) => ({ user: { id: val.id } }));
       return await this.find({
         where: whereUserIds,
-        relations: ['user'],
         order: {
           createdAt: 'DESC',
         },
@@ -43,7 +42,7 @@ export class TweetRepository extends Repository<Tweet> {
     try {
       const tweet = this.create({ user, post });
       await this.save(tweet);
-      return await this.findOne(tweet.id, { relations: ['user'] });
+      return await this.findOne(tweet.id);
     } catch (e) {
       throw new BadRequestException(e);
     }
