@@ -43,11 +43,11 @@ export class TweetRepository extends Repository<Tweet> {
     try {
       return await this.createQueryBuilder()
         .leftJoinAndSelect(
-          'hashtag_tweets_tweet',
-          'htt',
-          'Tweet.id = htt.tweetId',
+          'tweet_hashtags_hashtag',
+          'thh',
+          'Tweet.id = thh.tweetId',
         )
-        .where('htt.hashtagId = :id', { id: hashtag.id })
+        .where('thh.hashtagId = :id', { id: hashtag.id })
         .take(limit)
         .skip(offset)
         .getMany();

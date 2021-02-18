@@ -46,7 +46,7 @@ export class TweetsController {
     return this.tweetsService.findTweetsByUserId(user.userId);
   }
 
-  @Get()
+  @Post()
   @HttpCode(HttpStatus.OK)
   postTweet(
     @GetUser() user: JwtUserClaims,

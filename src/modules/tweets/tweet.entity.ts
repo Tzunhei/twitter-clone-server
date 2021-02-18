@@ -1,5 +1,5 @@
 import { Base } from 'src/shared/entities/base.entity';
-import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 import { Hashtag } from '../hashtags/hashtag.entity';
 import { User } from '../users/user.entity';
 
@@ -9,6 +9,7 @@ export class Tweet extends Base {
   user: User;
 
   @ManyToMany(() => Hashtag, (hashtag) => hashtag.tweets)
+  @JoinTable()
   hashtags: Hashtag[];
 
   @Column({ nullable: false })
