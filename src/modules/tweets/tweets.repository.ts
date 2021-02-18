@@ -42,12 +42,9 @@ export class TweetRepository extends Repository<Tweet> {
   async findTweetsByHashtag(hashtag: Hashtag, limit?: number, offset?: number) {
     try {
       return await this.createQueryBuilder()
-        .leftJoinAndSelect(
-          'tweet_hashtags_hashtag',
-          'thh',
-          'Tweet.id = thh.tweetId',
-        )
-        .where('thh.hashtagId = :id', { id: hashtag.id })
+        .leftJoinAndSelect('Tweet.user', 'user')
+        .leftJoin('Tweet.hashtags', 'hashtag')
+        .where('hashtag.id = :id', { id: hashtag.id })
         .take(limit)
         .skip(offset)
         .getMany();
