@@ -8,6 +8,14 @@ export class HashtagsService {
     return getCustomRepository(HashtagRepository);
   }
 
+  async findAllHashtags() {
+    return await this.getRepository().findAllHashtags();
+  }
+
+  async findHashtagByTag(tag: string) {
+    return await this.getRepository().findHashtagByTag(tag);
+  }
+
   private extractHashtagsFromTweet(tweet: string) {
     return tweet.split(' ').filter((word) => word.startsWith('#'));
   }

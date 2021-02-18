@@ -34,12 +34,20 @@ export class TweetsController {
     return this.tweetsService.getTweetsFeed(user.userId, paginationDto);
   }
 
+  @Get('/hashtag')
+  @HttpCode(HttpStatus.OK)
+  findTweetsByHashtag(@Query('tag') tag: string) {
+    return this.tweetsService.findTweetsByHashtag(tag);
+  }
+
   @Get('user')
   @HttpCode(HttpStatus.OK)
   findTweetsByUserId(@GetUser() user: JwtUserClaims) {
     return this.tweetsService.findTweetsByUserId(user.userId);
   }
 
+  @Get()
+  @HttpCode(HttpStatus.OK)
   @Post()
   @HttpCode(HttpStatus.OK)
   postTweet(

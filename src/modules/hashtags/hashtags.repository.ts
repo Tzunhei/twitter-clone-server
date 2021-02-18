@@ -4,6 +4,14 @@ import { Hashtag } from './hashtag.entity';
 
 @EntityRepository(Hashtag)
 export class HashtagRepository extends Repository<Hashtag> {
+  async findAllHashtags() {
+    try {
+      return await this.find();
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
   async findHashtagById(hashtagId: string) {
     try {
       return await this.findOne(hashtagId);

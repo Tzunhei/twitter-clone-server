@@ -28,6 +28,11 @@ export class TweetsService {
     );
   }
 
+  async findTweetsByHashtag(tag: string) {
+    const hashtag = await this.hashtagsService.findHashtagByTag(tag);
+    return this.getRepository().findTweetsByHashtag(hashtag);
+  }
+
   async findTweetById(tweetId: string) {
     return this.getRepository().findTweetById(tweetId);
   }

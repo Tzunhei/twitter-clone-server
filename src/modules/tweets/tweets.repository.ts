@@ -39,6 +39,23 @@ export class TweetRepository extends Repository<Tweet> {
     }
   }
 
+  async findTweetsByHashtag(hashtag: Hashtag, limit?: number, offset?: number) {
+    try {
+      return await this.createQueryBuilder()
+        .leftJoinAndSelect(
+          'hashtag_tweets_tweet',
+          'htt',
+          'Tweet.id = htt.tweetId',
+        )
+        .where('htt.hashtagId = :id', { id: hashtag.id })
+        .take(limit)
+        .skip(offset)
+        .getMany();
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
   async createTweet(user: User, post: string, hashtags: Hashtag[]) {
     try {
       const tweet = this.create({ user, post, hashtags });
