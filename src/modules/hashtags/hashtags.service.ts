@@ -40,4 +40,8 @@ export class HashtagsService {
     const hashtag = await this.getRepository().findHashtagById(hashtagId);
     return await this.getRepository().deleteHashtag(hashtag);
   }
+
+  async searchHashtags(search: string) {
+    return this.getRepository().searchHashtags(search);
+  }
 }

@@ -28,4 +28,8 @@ export class UsersService {
   deleteUser(id: string) {
     return this.getRepository().deleteUser(id);
   }
+
+  searchUsers(search: string) {
+    return this.getRepository().searchUsers(search);
+  }
 }

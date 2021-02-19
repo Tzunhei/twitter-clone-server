@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Like, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto, UpdateUserDto } from './users.dto';
 import * as bcrypt from 'bcryptjs';
@@ -128,6 +128,14 @@ export class UserRepository extends Repository<User> {
         .of(user)
         .remove(followId);
       return true;
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async searchUsers(search: string) {
+    try {
+      return await this.find({ username: Like(`${search}%`) });
     } catch (e) {
       throw new BadRequestException(e);
     }

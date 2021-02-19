@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { LikesModule } from './modules/likes/likes.module';
 import { ConfigModule } from '@nestjs/config';
 import { HashtagsModule } from './modules/hashtags/hashtags.module';
+import { SearchModule } from './modules/search/search.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { HashtagsModule } from './modules/hashtags/hashtags.module';
     TweetsModule,
     LikesModule,
     HashtagsModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],

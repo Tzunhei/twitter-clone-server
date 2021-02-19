@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Like, Repository } from 'typeorm';
 import { Hashtag } from './hashtag.entity';
 
 @EntityRepository(Hashtag)
@@ -49,6 +49,14 @@ export class HashtagRepository extends Repository<Hashtag> {
   async deleteHashtag(hashtag: Hashtag) {
     try {
       return await this.delete(hashtag);
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
+  async searchHashtags(search: string) {
+    try {
+      return await this.find({ tag: Like(`#${search}%`) });
     } catch (e) {
       throw new BadRequestException(e);
     }
