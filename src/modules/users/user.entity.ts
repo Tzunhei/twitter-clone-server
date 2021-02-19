@@ -37,6 +37,16 @@ export class User extends Base {
   nb_following: number;
 
   @ManyToMany(() => User)
-  @JoinTable()
-  follow: User[];
+  @JoinTable({
+    name: 'user_followings',
+    joinColumn: {
+      name: 'userId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'following_userId',
+      referencedColumnName: 'id',
+    },
+  })
+  followings: User[];
 }

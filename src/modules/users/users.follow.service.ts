@@ -32,17 +32,23 @@ export class FollowService {
 
   async followUser(userId: string, followId: string) {
     const user = await this.usersService.findUserById(userId);
-    const follow = await this.usersService.findUserById(followId);
+    const following = await this.usersService.findUserById(followId);
     await this.getRepository().incrementFollowCount(user.id, 'nb_following');
-    await this.getRepository().incrementFollowCount(follow.id, 'nb_followers');
-    return this.getRepository().followUser(user, follow);
+    await this.getRepository().incrementFollowCount(
+      following.id,
+      'nb_followers',
+    );
+    return this.getRepository().followUser(user, following);
   }
 
   async unfollowUser(userId: string, followId: string) {
     const user = await this.usersService.findUserById(userId);
-    const follow = await this.usersService.findUserById(followId);
+    const following = await this.usersService.findUserById(followId);
     await this.getRepository().decrementFollowCount(user.id, 'nb_following');
-    await this.getRepository().decrementFollowCount(follow.id, 'nb_followers');
-    return this.getRepository().unfollowUser(user, follow.id);
+    await this.getRepository().decrementFollowCount(
+      following.id,
+      'nb_followers',
+    );
+    return this.getRepository().unfollowUser(user, following.id);
   }
 }

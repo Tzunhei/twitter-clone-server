@@ -14,17 +14,13 @@ export class UserRepository extends Repository<User> {
   async getUserFollowings(userId: string, limit?: number, offset?: number) {
     try {
       return await this.createQueryBuilder()
-        .leftJoinAndSelect(
-          'user_follow_user',
-          'follow',
-          'follow.userId_1 = User.id',
-        )
+        .leftJoinAndSelect('user_followings', 'uf', 'uf.userId = User.id')
         .where((qb) => {
           const followingsIds = qb
             .subQuery()
-            .select('follow.userId_2')
-            .from('user_follow_user', 'follow')
-            .where('follow.userId_1 = :id', { id: userId })
+            .select('uf.following_userId')
+            .from('user_followings', 'uf')
+            .where('uf.userId = :id', { id: userId })
             .getQuery();
           return `User.id IN ${followingsIds}`;
         })
@@ -39,12 +35,8 @@ export class UserRepository extends Repository<User> {
   async getUserFollowers(userId: string, limit?: number, offset?: number) {
     try {
       return await this.createQueryBuilder()
-        .leftJoinAndSelect(
-          'user_follow_user',
-          'follow',
-          'follow.userId_1 = User.id',
-        )
-        .where('follow.userId_2 = :id', { id: userId })
+        .leftJoinAndSelect('user_followings', 'uf', 'uf.userId = User.id')
+        .where('uf.following_userId = :id', { id: userId })
         .take(limit)
         .skip(offset)
         .getMany();
@@ -117,12 +109,12 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async followUser(user: User, follow: User) {
+  async followUser(user: User, following: User) {
     try {
       await this.createQueryBuilder()
-        .relation(User, 'follow')
+        .relation(User, 'followings')
         .of(user)
-        .add(follow);
+        .add(following);
       return true;
     } catch (e) {
       throw new BadRequestException(e);
@@ -132,7 +124,7 @@ export class UserRepository extends Repository<User> {
   async unfollowUser(user: User, followId: string) {
     try {
       await this.createQueryBuilder()
-        .relation(User, 'follow')
+        .relation(User, 'followings')
         .of(user)
         .remove(followId);
       return true;
