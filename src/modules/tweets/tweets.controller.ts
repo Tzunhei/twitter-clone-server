@@ -34,6 +34,15 @@ export class TweetsController {
     return this.tweetsService.getTweetsFeed(user.userId, paginationDto);
   }
 
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  getUserTweetsFeed(
+    @Param('id') id: string,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.tweetsService.getTweetsFeed(id, paginationDto);
+  }
+
   @Get('hashtag')
   @HttpCode(HttpStatus.OK)
   findTweetsByHashtag(@Query() findTweetsByHashtagDto: FindTweetsByHashtagDto) {
