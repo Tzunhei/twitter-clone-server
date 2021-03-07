@@ -9,6 +9,10 @@ export class UsersService {
     return getCustomRepository(UserRepository);
   }
 
+  findUserByEmail(email: string) {
+    return this.getRepository().findUserByEmail(email);
+  }
+
   findUserByUsername(username: string) {
     return this.getRepository().findUserByUsername(username);
   }

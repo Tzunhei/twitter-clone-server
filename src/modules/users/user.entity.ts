@@ -11,7 +11,7 @@ export class User extends Base {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Exclude()
   password: string;
 

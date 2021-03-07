@@ -5,17 +5,16 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
+  @IsOptional()
   password: string;
 
   @IsString()
   username: string;
 
   @IsString()
-  @IsOptional()
   first_name: string;
 
   @IsString()
-  @IsOptional()
   last_name: string;
 
   @IsString()

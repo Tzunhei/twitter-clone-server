@@ -45,6 +45,19 @@ export class UserRepository extends Repository<User> {
     }
   }
 
+  async findUserByEmail(email: string) {
+    try {
+      const user = await this.findOne({ email });
+      if (!user)
+        throw new BadRequestException(
+          `User with the email ${email} does not exists`,
+        );
+      return user;
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
+  }
+
   async findUserByUsername(username: string) {
     try {
       return this.findOne({ username });
@@ -63,11 +76,16 @@ export class UserRepository extends Repository<User> {
 
   async createUser(createUserDto: CreateUserDto) {
     try {
-      const password = await this.hashPassword(createUserDto.password);
-      const user = this.create({
-        ...createUserDto,
-        password,
-      });
+      let user: User;
+      if (createUserDto.password) {
+        const password = await this.hashPassword(createUserDto.password);
+        user = this.create({
+          ...createUserDto,
+          password,
+        });
+      } else {
+        user = this.create(createUserDto);
+      }
       await this.save(user);
       return user;
     } catch (e) {
