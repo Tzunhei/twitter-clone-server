@@ -13,7 +13,6 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { IsEmail } from 'class-validator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateUserDto, UpdateUserDto } from './users.dto';
 import { UsersService } from './users.service';
